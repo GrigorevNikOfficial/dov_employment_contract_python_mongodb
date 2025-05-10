@@ -1,7 +1,7 @@
 {
   "name": "dov_python_mongodb",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Автоматизированная система, включающая 'Доверенность' и 'Трудовой договор'",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

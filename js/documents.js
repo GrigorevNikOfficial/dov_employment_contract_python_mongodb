@@ -1,3 +1,7 @@
+// Author: Nikita Grigorev
+
+//----------------------------------------------------------------------------------------------------------------------
+
 // Окно создания, изменения документа
 let frame_doc = document.getElementById("frame_doc");
 // Кнопка выйти на форме
@@ -23,6 +27,8 @@ let list_data_organizations;
 let list_data_items;
 // Переменная текущего документа
 let num_doc_text;
+let date_with_text;
+let date_for_text;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Функция загрузки коллекции Документы
@@ -187,7 +193,7 @@ table_add_row.addEventListener('click', () => {
                                                                     <input type="text" value="${index+1}">
                                                                 </td>
                                                                 <td>
-                                                                    <select id="doc_table_itemsSelect" type="text"></select>
+                                                                    <select id="doc_table_itemsSelect"></select>
                                                                 </td>
                                                                 <td>
                                                                     <input type="text">
@@ -375,14 +381,19 @@ document.addEventListener('click', async function(event) {
         // 1. Находим ближайший элемент с классом "table_row"
         // 2. Находим второе дитя - номер документа
         num_doc_text = event.target.closest('.table_row')
-            .querySelector('div:nth-child(2)').textContent;
+            .querySelector('div:nth-child(2)');
+        date_with_text = event.target.closest('.table_row')
+            .querySelector('div:nth-child(3) div:nth-child(1)');
+        date_for_text = event.target.closest('.table_row')
+            .querySelector('div:nth-child(3) div:nth-child(2)');
+
 
         let objs = JSON.parse(JSON.stringify(await eel.collection_documents_load_records()()));
 
         await select_loader();
 
         for (let obj of objs) {
-            if (obj.num_dover === num_doc_text) {
+            if (obj.num_dover === num_doc_text.textContent) {
                 document.getElementById('doc_num_dover').value = obj.num_dover;
                 document.getElementById('doc_issue_with_day').value = obj.issue_with[0].day;
                 document.getElementById('doc_issue_with_month').value = obj.issue_with[0].month;
@@ -471,7 +482,7 @@ frame_doc_confirm_but.addEventListener('click', async function() {
         await collection_documents_add();
     }
     else {
-        let doc_num_dover_current = num_doc_text;
+        let doc_num_dover_current = num_doc_text.textContent;
         let doc_num_dover_new = document.getElementById('doc_num_dover').value;
         let doc_home_org_new = document.getElementById('doc_home_org').options[document.getElementById("doc_home_org").selectedIndex].textContent;
         let doc_issue_with_day_new = document.getElementById('doc_issue_with_day').value;
@@ -516,6 +527,9 @@ frame_doc_confirm_but.addEventListener('click', async function() {
             doc_issue_get_num_doc_new,
             doc_table_rows_new
         )();
+        num_doc_text.textContent = doc_num_dover_new;
+        date_with_text.textContent = doc_issue_with_day_new + '.' + doc_issue_with_month_new + '.' + doc_issue_with_year_new;
+        date_for_text.textContent = doc_issue_for_day_new + '.' + doc_issue_for_month_new + '.' + doc_issue_for_year_new;
 
     }
     frame_doc.style.display = "none";
