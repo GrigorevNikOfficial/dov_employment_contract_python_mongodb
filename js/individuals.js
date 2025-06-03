@@ -66,11 +66,15 @@ async function collection_individuals_add() {
     let frame_indiv_issued_for_year = document.getElementById("frame_indiv_issued_for_year").value;
     // Получаем элемент HTML значение для "kod" individuals
     let frame_indiv_kod = document.getElementById("frame_indiv_kod").value;
+    // Получаем элемент HTML значение для "otdel" individuals
+    let frame_indiv_otdel = document.getElementById("frame_indiv_otdel").value;
+    // Получаем элемент HTML значение для "dol" individuals
+    let frame_indiv_dol = document.getElementById("frame_indiv_dol").value;
     // Получаем количество элементов таблицы (включая заголовок) Физические лица HTML, который далее будет индексом
-    let selec_individ_row = document.querySelectorAll(".section.individuals .table_row").length; //номер селектора (строки) последнего из таблицы для определния номера следующей строки
+    let selec_individ_row = document.querySelectorAll(".section.individuals .table_row").length;
 
     //Добавление записи с условием проверки на наличие уже существущей записи
-    if (await eel.collection_individuals_add(frame_indiv_surn, frame_indiv_name, frame_indiv_patr, frame_indiv_serial, frame_indiv_num, frame_indiv_issue, frame_indiv_address, frame_indiv_issued_for_day, frame_indiv_issued_for_month, frame_indiv_issued_for_year, frame_indiv_kod)()) {
+    if (await eel.collection_individuals_add(frame_indiv_surn, frame_indiv_name, frame_indiv_patr, frame_indiv_serial, frame_indiv_num, frame_indiv_issue, frame_indiv_address, frame_indiv_issued_for_day, frame_indiv_issued_for_month, frame_indiv_issued_for_year, frame_indiv_kod, frame_indiv_otdel, frame_indiv_dol)()) {
         // Получаем элемент таблицы
         let table = document.querySelector('.section.individuals .section_table');
         // Создаём новый элемент
@@ -180,6 +184,8 @@ document.addEventListener('click', async function(event) {
                     current_row_indiv_issued_for_month.value = record[index].issued_for[0].month;
                     current_row_indiv_issued_for_year.value = record[index].issued_for[0].year;
                     current_row_indiv_kod.value = record[index].kod;
+                    current_row_indiv_otdel.value = record[index].otdel;
+                    current_row_indiv_dol.value = record[index].dol;
                     break
             }
         // Обновляем индекс
@@ -212,6 +218,8 @@ let current_row_indiv_issued_for_day = document.getElementById("frame_indiv_issu
 let current_row_indiv_issued_for_month = document.getElementById("frame_indiv_issued_for_month");
 let current_row_indiv_issued_for_year = document.getElementById("frame_indiv_issued_for_year");
 let current_row_indiv_kod = document.getElementById("frame_indiv_kod");
+let current_row_indiv_otdel = document.getElementById("frame_indiv_otdel");
+let current_row_indiv_dol = document.getElementById("frame_indiv_dol");
 
 let current_row_indiv_surname_text;
 let current_row_indiv_name_text;
@@ -240,6 +248,8 @@ section_individuals_addBut.addEventListener('click', ()=>{
     current_row_indiv_issued_for_month.value = "";
     current_row_indiv_issued_for_year.value = "";
     current_row_indiv_kod.value = "";
+    current_row_indiv_otdel.value = "";
+    current_row_indiv_dol.value = "";
 
     frame_indiv.style.display = "flex";
     frame_indiv_k = 0;
@@ -275,7 +285,9 @@ frame_indiv_confirm_but.addEventListener('click', async function() {
             current_row_indiv_issued_for_day.value,
             current_row_indiv_issued_for_month.value,
             current_row_indiv_issued_for_year.value,
-            current_row_indiv_kod.value
+            current_row_indiv_kod.value,
+            current_row_indiv_otdel.value,
+            current_row_indiv_dol.value,
         )();
 
         current_row_indiv_surname_text.textContent = current_row_indiv_surname.value;

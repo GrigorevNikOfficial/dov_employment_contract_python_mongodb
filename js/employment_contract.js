@@ -10,6 +10,14 @@ let frame_employment_contact = document.getElementById("frame_employment_contact
 let frame_emp_exit= document.querySelector('.frame_emp_exit');
 // Кнопка добавить в форме Документы
 let frame_emp_confirm_but = document.querySelector('.frame_employment_contact_cont .confirm_but');
+// Таблица элементов
+let emp_table = document.querySelector('#frame_employment_contact .enter_data_field table');
+console.log('Таблица employment_contract найдена:', emp_table); // Отладка
+// Кнопка - плюс элемент
+let emp_table_add_row = document.getElementById('emp_button_add');
+console.log('Кнопка + найдена:', emp_table_add_row); // Отладка
+// Кнопка - минус элемент
+let emp_table_delete_row = document.getElementById('emp_button_delete');
 
 // Переменная длы выбора: изменение, создание
 let frame_emp_k;
@@ -21,15 +29,14 @@ let list_data_individuals;
 let list_data_organizations;
 // Переменная текущего документа
 let num_emp_text;
-let emp_emp_text;
+let date_emp_text;
 let fio_emp_text;
-let position_emp_text;
-let salary_emp_text;
+let org_emp_text;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Загрузка данных
 
-// Загрузка коллекции Трудовые договоры
+// Загрузка коллекции Трудовые договоры (Приказы о перемещении)
 async function collection_employment_contract_load_records() {
     // Индекс для перебора
     let index = 0;
@@ -39,16 +46,15 @@ async function collection_employment_contract_load_records() {
     let record = JSON.parse(JSON.stringify(await eel.collection_employment_contract_load_records()()));
     // Перебираем все записи
     while (record[index]) {
-        // Получаем элемент таблицы Трудовые договоры HTML
+        // Получаем элемент таблицы Приказы о перемещении HTML
         let table = document.querySelector('.section.employment_contact .section_table');
         // Создаём HTML код для вставки на основную страницу как отдельного Документа Коллекции
         let newElement =    `<div class="table_row">
                                         <div>${index+1}</div>
                                         <div>${record[index].num_dover}</div>
+                                        <div>${record[index].date[0].day+"."+record[index].date[0].month+"."+record[index].date[0].year}</div>
+                                        <div>${record[index].employer[0].fio}</div>
                                         <div>${record[index].employer_name}</div>
-                                        <div>${record[index].employee[0].fio}</div>
-                                        <div>${record[index].employee[0].position}</div>
-                                        <div>${record[index].salary}</div>
                                         <div>
                                             <div class="table_row_print"></div>
                                             <div class="table_row_change"></div>
@@ -128,131 +134,104 @@ async function select_loader() {
     // Присвоение всех записей из коллекции "Организации"
     list_data_organizations = JSON.parse(JSON.stringify(await eel.collection_organizations_load_records()()));
     // Добавление в выпадающий список "Организации"
-    add_select(document.getElementById("emp_employer_name"), list_data_organizations);
-    // Добавление в выпадающий список "Наименование потребителя"
+    add_select(document.getElementById("emp_org"), list_data_organizations);
+    // Добавление в выпадающий список "ФИО ответственного"
     add_select2(document.getElementById("emp_employer_fio"), list_data_individuals);
-    // Добавление в выпадающий список "Наименование плательщика"
-    add_select2(document.getElementById("emp_employee_fio"), list_data_individuals);
-    // Добавление в выпадающий список "Наименование получателя"
-    add_select2(document.getElementById("emp_supervisor_fio"), list_data_individuals);
+
+    // Добавление в выпадающий список "ФИО сотрудника" в таблице
+    document.querySelectorAll(".emp_table_row .emp_table_employee").forEach(element => {
+        add_select2(element, list_data_individuals);
+
+        // Add event listener for employee selection
+        element.addEventListener('change', function() {
+            let row = this.closest('.emp_table_row');
+            let selectedIndex = this.selectedIndex;
+            if (selectedIndex > 0) {
+                let individual = list_data_individuals[selectedIndex - 1];
+                row.querySelector('.emp_table_prev_position').value = individual.dol;
+                row.querySelector('.emp_table_prev_department').value = individual.otdel;
+            } else {
+                row.querySelector('.emp_table_prev_position').value = "";
+                row.querySelector('.emp_table_prev_department').value = "";
+            }
+        });
+    });
+
+    // Добавление в выпадающий список "ФИО переводящего" в таблице
+    document.querySelectorAll(".emp_table_row .emp_table_transfer_by").forEach(element => {
+        add_select2(element, list_data_individuals);
+    });
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 // Добавление элемента
 
-// Форма ввода для Физического лица
+// Форма ввода для приказа о перемещении
 async function collection_employment_contract_add() {
+    // Получаем основные данные документа
     let emp_num_dover = document.getElementById("emp_num_dover").value;
-    let emp_city = document.getElementById("emp_city").value;
     let emp_date_day = document.getElementById("emp_date_day").value;
     let emp_date_month = document.getElementById("emp_date_month").value;
     let emp_date_year = document.getElementById("emp_date_year").value;
-    let emp_employer_name = document.getElementById("emp_employer_name").options[document.getElementById("emp_employer_name").selectedIndex].textContent;
     let emp_employer_fio = document.getElementById("emp_employer_fio").options[document.getElementById("emp_employer_fio").selectedIndex].textContent;
-    let emp_employer_position = document.getElementById("emp_employer_position").value;
-    let emp_charter = document.getElementById("emp_charter").value;
-    let emp_employee_fio = document.getElementById("emp_employee_fio").options[document.getElementById("emp_employee_fio").selectedIndex].textContent;
-    let emp_employee_position = document.getElementById("emp_employee_position").value;
-    let emp_work_place = document.getElementById("emp_work_place").value;
-    let emp_work_address = document.getElementById("emp_work_address").value;
-    let emp_supervisor_fio = document.getElementById("emp_supervisor_fio").options[document.getElementById("emp_supervisor_fio").selectedIndex].textContent;
-    let emp_class = document.getElementById("emp_class").value;
-    let emp_start_day = document.getElementById("emp_start_day").value;
-    let emp_start_month = document.getElementById("emp_start_month").value;
-    let emp_start_year = document.getElementById("emp_start_year").value;
-    let emp_duration = document.getElementById("emp_duration").value;
-    let emp_salary = document.getElementById("emp_salary").value;
-    let emp_holiday_duration = document.getElementById("emp_holiday_duration").value;
-    let emp_day_start_time = document.getElementById("emp_day_start_time").value;
-    let emp_day_end_time = document.getElementById("emp_day_end_time").value;
-    let emp_day_rest_start_time = document.getElementById("emp_day_rest_start_time").value;
-    let emp_day_rest_end_time = document.getElementById("emp_day_rest_end_time").value;
-    let emp_company_address = document.getElementById("emp_company_address").value;
-    let emp_inn = document.getElementById("emp_inn").value;
-    let emp_kpp = document.getElementById("emp_kpp").value;
-    let emp_account = document.getElementById("emp_account").value;
-    let emp_bik = document.getElementById("emp_bik").value;
-    let emp_pass_seria = document.getElementById("emp_pass_seria").value;
-    let emp_pass_number = document.getElementById("emp_pass_number").value;
-    let emp_pass_issued = document.getElementById("emp_pass_issued").value;
-    let emp_pass_issue_for_day = document.getElementById("emp_pass_issue_for_day").value;
-    let emp_pass_issue_for_month = document.getElementById("emp_pass_issue_for_month").value;
-    let emp_pass_issue_for_year = document.getElementById("emp_pass_issue_for_year").value;
-    let emp_pass_kod = document.getElementById("emp_pass_kod").value;
-    let emp_pass_address = document.getElementById("emp_pass_address").value;
-    let emp_inspection_date_day = document.getElementById("emp_inspection_date_day").value;
-    let emp_inspection_date_month = document.getElementById("emp_inspection_date_month").value;
-    let emp_inspection_date_year = document.getElementById("emp_inspection_date_year").value;
-    let emp_receipt_date_day = document.getElementById("emp_receipt_date_day").value;
-    let emp_receipt_date_month = document.getElementById("emp_receipt_date_month").value;
-    let emp_receipt_date_year = document.getElementById("emp_receipt_date_year").value;
+    let emp_employer_cause = document.getElementById("emp_employer_cause").value;
+    let emp_org = document.getElementById("emp_org").options[document.getElementById("emp_org").selectedIndex].textContent;
 
-    // Получаем количество элементов таблицы (включая заголовок) Физические лица HTML, который далее будет индексом
+    // Считывание данных из таблицы
+    let emp_table_rows = [];
+
+    // Перебор каждой строки таблицы формы
+    for (let record of document.querySelectorAll('.emp_table_row')) {
+        let row = {};
+
+        // Получаем выбранного сотрудника
+        let employeeSelect = record.querySelector('.emp_table_employee');
+        row.employee = employeeSelect.options[employeeSelect.selectedIndex].textContent;
+
+        // Получаем предыдущую и новую должность
+        row.prev_position = record.querySelector('.emp_table_prev_position').value;
+        row.new_position = record.querySelector('.emp_table_new_position').value;
+
+        // Получаем предыдущий и новый отдел
+        row.prev_department = record.querySelector('.emp_table_prev_department').value;
+        row.new_department = record.querySelector('.emp_table_new_department').value;
+
+        // Получаем ФИО переводящего
+        let transferBySelect = record.querySelector('.emp_table_transfer_by');
+        row.transfer_by = transferBySelect.options[transferBySelect.selectedIndex].textContent;
+
+        emp_table_rows.push(row);
+    }
+
+    // Получаем количество элементов таблицы (включая заголовок) HTML, который далее будет индексом
     let select_emp_row = document.querySelectorAll(".section.employment_contact .table_row").length;
 
     // Добавление записи с условием проверки на наличие уже существующей записи
     if (await eel.collection_employment_contract_add(
         emp_num_dover,
-        emp_city,
         emp_date_day,
         emp_date_month,
         emp_date_year,
-        emp_employer_name,
         emp_employer_fio,
-        emp_employer_position,
-        emp_charter,
-        emp_employee_fio,
-        emp_employee_position,
-        emp_work_place,
-        emp_work_address,
-        emp_supervisor_fio,
-        emp_class,
-        emp_start_day,
-        emp_start_month,
-        emp_start_year,
-        emp_duration,
-        emp_salary,
-        emp_holiday_duration,
-        emp_day_start_time,
-        emp_day_end_time,
-        emp_day_rest_start_time,
-        emp_day_rest_end_time,
-        emp_company_address,
-        emp_inn,
-        emp_kpp,
-        emp_account,
-        emp_bik,
-        emp_pass_seria,
-        emp_pass_number,
-        emp_pass_issued,
-        emp_pass_issue_for_day,
-        emp_pass_issue_for_month,
-        emp_pass_issue_for_year,
-        emp_pass_kod,
-        emp_pass_address,
-        emp_inspection_date_day,
-        emp_inspection_date_month,
-        emp_inspection_date_year,
-        emp_receipt_date_day,
-        emp_receipt_date_month,
-        emp_receipt_date_year
+        emp_employer_cause,
+        emp_table_rows,
+        emp_org
     )()) {
         // Получаем элемент таблицы
         let table = document.querySelector('.section.employment_contact .section_table');
         // Создаём новый элемент
         let newElement = `<div class="table_row">
-                                        <div>${select_emp_row}</div>
-                                        <div>${emp_num_dover}</div>
-                                        <div>${emp_employer_name}</div>
-                                        <div>${emp_employee_fio}</div>
-                                        <div>${emp_employee_position}</div>
-                                        <div>${emp_salary}</div>
-                                        <div>
-                                            <div class="table_row_print"></div>
-                                            <div class="table_row_change"></div>
-                                            <div class="table_row_delete"></div>
-                                        </div>
-                                    </div>`;
+                                <div>${select_emp_row}</div>
+                                <div>${emp_num_dover}</div>
+                                <div>${emp_date_day+"."+emp_date_month+"."+emp_date_year}</div>
+                                <div>${emp_employer_fio}</div>
+                                <div>${emp_org}</div>
+                                <div>
+                                    <div class="table_row_print"></div>
+                                    <div class="table_row_change"></div>
+                                    <div class="table_row_delete"></div>
+                                </div>
+                            </div>`;
         // Добавляем новый элемент в конец таблицы
         table.insertAdjacentHTML('beforeend', newElement);
     } else {
@@ -260,6 +239,88 @@ async function collection_employment_contract_add() {
         alert('Запись уже существует');
     }
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Кнопка добавления записи в таблицу
+emp_table_add_row.addEventListener('click', async () => {
+    console.log('Кнопка + нажата'); // Отладка
+    console.log('Таблица найдена:', emp_table); // Отладка
+    console.log('Количество строк до добавления:', document.querySelectorAll(".emp_table_row").length); // Отладка
+    
+    // Проверяем, что данные загружены
+    if (!list_data_individuals || list_data_individuals.length === 0) {
+        console.log('Загружаем данные...'); // Отладка
+        await select_loader();
+    }
+    
+    let index = document.querySelectorAll(".emp_table_row").length;
+    emp_table.insertAdjacentHTML("beforeend", `<tr class="emp_table_row" id="emp_table_row_${index}">
+                                                <td>
+                                                    <input type="text" value="${index+1}">
+                                                </td>
+                                                <td>
+                                                    <select class="emp_table_employee">
+                                                        <option value="">Выберите сотрудника:</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="emp_table_prev_position" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="emp_table_new_position">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="emp_table_prev_department" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="emp_table_new_department">
+                                                </td>
+                                                <td>
+                                                    <select class="emp_table_transfer_by">
+                                                        <option value="">Выберите переводящего:</option>
+                                                    </select>
+                                                </td>
+                                            </tr>`);
+
+    console.log('HTML добавлен'); // Отладка
+    console.log('Количество строк после добавления:', document.querySelectorAll(".emp_table_row").length); // Отладка
+
+    // Get the newly added row
+    let newRow = document.getElementById(`emp_table_row_${index}`);
+    console.log('Новая строка найдена:', newRow); // Отладка
+
+    // Проверяем, загружены ли данные
+    if (list_data_individuals && list_data_individuals.length > 0) {
+        console.log('Данные individuals загружены:', list_data_individuals.length); // Отладка
+        
+        // Add data to select elements
+        add_select2(newRow.querySelector('.emp_table_employee'), list_data_individuals);
+        add_select2(newRow.querySelector('.emp_table_transfer_by'), list_data_individuals);
+
+        // Add event listener for employee selection
+        newRow.querySelector('.emp_table_employee').addEventListener('change', function() {
+            let row = this.closest('.emp_table_row');
+            let selectedIndex = this.selectedIndex;
+            if (selectedIndex > 0) {
+                let individual = list_data_individuals[selectedIndex - 1];
+                row.querySelector('.emp_table_prev_position').value = individual.dol;
+                row.querySelector('.emp_table_prev_department').value = individual.otdel;
+            } else {
+                row.querySelector('.emp_table_prev_position').value = "";
+                row.querySelector('.emp_table_prev_department').value = "";
+            }
+        });
+    } else {
+        console.error('Данные individuals не загружены!'); // Отладка
+    }
+});
+
+// Кнопка удаления записи из таблицы
+emp_table_delete_row.addEventListener('click', () => {
+    if (emp_table.childNodes.length > 2){
+        emp_table.lastChild.remove();
+    }
+});
 
 //----------------------------------------------------------------------------------------------------------------------
 // Функция настроек формы по умолчанию
@@ -271,6 +332,22 @@ async function form_settings() {
     document.querySelectorAll('#frame_employment_contact input').forEach(element => {
             element.value = null;
     });
+
+    // Clear table rows except the first one
+    while (emp_table.childNodes.length > 2){
+        emp_table.lastChild.remove();
+    }
+
+    // Reset the first row
+    if (document.querySelector('.emp_table_row')) {
+        document.querySelector('.emp_table_row input').value = "1";
+        document.querySelectorAll('.emp_table_row select').forEach(element => {
+            element.selectedIndex = 0;
+        });
+        document.querySelectorAll('.emp_table_row input:not(:first-child)').forEach(element => {
+            element.value = "";
+        });
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -335,24 +412,22 @@ frame_emp_exit.addEventListener('click', () => {
 //----------------------------------------------------------------------------------------------------------------------
 // Изменение записи
 
-// Обработка по нажатию на кнопку "Изменить" в "Трудовые договоры"
+// Обработка по нажатию на кнопку "Изменить" в "Приказы о перемещении"
 document.addEventListener('click', async function(event) {
     // Ищем конкретное место клика - иконка удалить с классом "table_row_change", вложенная в "employment_contact"
     if (event.target.classList.contains("table_row_change") &&
         event.target.closest(".employment_contact")) {
-        // Обновляем элемент трудового договора через значение HTML элемента
+        // Обновляем элемент приказа о перемещении через значение HTML элемента
         // 1. Находим ближайший элемент с классом "table_row"
         // 2. Находим второе дитя - номер документа
         num_emp_text = event.target.closest('.table_row')
             .querySelector('div:nth-child(2)');
-        emp_emp_text = event.target.closest('.table_row')
+        date_emp_text = event.target.closest('.table_row')
             .querySelector('div:nth-child(3)');
         fio_emp_text = event.target.closest('.table_row')
             .querySelector('div:nth-child(4)');
-        position_emp_text = event.target.closest('.table_row')
+        org_emp_text = event.target.closest('.table_row')
             .querySelector('div:nth-child(5)');
-        salary_emp_text = event.target.closest('.table_row')
-            .querySelector('div:nth-child(6)');
 
         let objs = JSON.parse(JSON.stringify(await eel.collection_employment_contract_load_records()()));
 
@@ -360,55 +435,64 @@ document.addEventListener('click', async function(event) {
 
         for (let obj of objs) {
             if (obj.num_dover === num_emp_text.textContent) {
+                // Заполняем основные поля документа
                 document.getElementById('emp_num_dover').value = obj.num_dover;
-                document.getElementById('emp_city').value = obj.city;
                 document.getElementById('emp_date_day').value = obj.date[0].day;
                 document.getElementById('emp_date_month').value = obj.date[0].month;
                 document.getElementById('emp_date_year').value = obj.date[0].year;
-                document.getElementById('emp_employer_position').value = obj.employer[0].position;
-                document.getElementById('emp_charter').value = obj.charter;
-                document.getElementById('emp_employee_position').value = obj.employee[0].position;
-                document.getElementById('emp_work_place').value = obj.work_place;
-                document.getElementById('emp_work_address').value = obj.work_address;
-                document.getElementById('emp_class').value = obj.class;
-                document.getElementById('emp_start_day').value = obj.date_start[0].day;
-                document.getElementById('emp_start_month').value = obj.date_start[0].month;
-                document.getElementById('emp_start_year').value = obj.date_start[0].year;
-                document.getElementById('emp_duration').value = obj.duration;
-                document.getElementById('emp_salary').value = obj.salary;
-                document.getElementById('emp_holiday_duration').value = obj.holiday_duration;
-                document.getElementById('emp_day_start_time').value = obj.day_schedule[0].start_time;
-                document.getElementById('emp_day_end_time').value = obj.day_schedule[0].end_time;
-                document.getElementById('emp_day_rest_start_time').value = obj.day_schedule[0].rest_start_time;
-                document.getElementById('emp_day_rest_end_time').value = obj.day_schedule[0].rest_end_time;
-                document.getElementById('emp_company_address').value = obj.company_address;
-                document.getElementById('emp_inn').value = obj.inn;
-                document.getElementById('emp_kpp').value = obj.kpp;
-                document.getElementById('emp_account').value = obj.account;
-                document.getElementById('emp_bik').value = obj.bik;
-                document.getElementById('emp_pass_seria').value = obj.employee[0].pass_seria;
-                document.getElementById('emp_pass_number').value = obj.employee[0].pass_number;
-                document.getElementById('emp_pass_issued').value = obj.employee[0].pass_issued;
-                document.getElementById('emp_pass_issue_for_day').value = obj.employee[0].pass_issue_for[0].day;
-                document.getElementById('emp_pass_issue_for_month').value = obj.employee[0].pass_issue_for[0].month;
-                document.getElementById('emp_pass_issue_for_year').value = obj.employee[0].pass_issue_for[0].year;
-                document.getElementById('emp_pass_kod').value = obj.employee[0].pass_kod;
-                document.getElementById('emp_pass_address').value = obj.employee[0].pass_address;
-                document.getElementById('emp_inspection_date_day').value = obj.inspection_date[0].day;
-                document.getElementById('emp_inspection_date_month').value = obj.inspection_date[0].month;
-                document.getElementById('emp_inspection_date_year').value = obj.inspection_date[0].year;
-                document.getElementById('emp_receipt_date_day').value = obj.receipt_date[0].day;
-                document.getElementById('emp_receipt_date_month').value = obj.receipt_date[0].month;
-                document.getElementById('emp_receipt_date_year').value = obj.receipt_date[0].year;
+                document.getElementById('emp_employer_cause').value = obj.emp_employer_cause;
 
-                select_definer(document.getElementById('emp_employer_name'), obj.employer_name);
+                // Выбираем организацию и ответственное лицо
+                select_definer(document.getElementById('emp_org'), obj.employer_name);
                 select_definer(document.getElementById('emp_employer_fio'), obj.employer[0].fio);
-                select_definer(document.getElementById('emp_employee_fio'), obj.employee[0].fio);
-                select_definer(document.getElementById('emp_supervisor_fio'), obj.supervisor_fio);
+
+                // Очищаем таблицу
+                while (emp_table.childNodes.length > 2) {
+                    emp_table.lastChild.remove();
+                }
+
+                // Заполняем таблицу данными
+                if (obj.table && obj.table.length > 0) {
+                    // Заполняем первую строку
+                    let firstRow = document.querySelector('.emp_table_row');
+                    if (firstRow) {
+                        firstRow.querySelector('input').value = "1";
+
+                        // Выбираем сотрудника
+                        select_definer(firstRow.querySelector('.emp_table_employee'), obj.table[0].employee);
+
+                        // Заполняем должности и отделы
+                        firstRow.querySelector('.emp_table_prev_position').value = obj.table[0].prev_position;
+                        firstRow.querySelector('.emp_table_new_position').value = obj.table[0].new_position;
+                        firstRow.querySelector('.emp_table_prev_department').value = obj.table[0].prev_department;
+                        firstRow.querySelector('.emp_table_new_department').value = obj.table[0].new_department;
+
+                        // Выбираем переводящего
+                        select_definer(firstRow.querySelector('.emp_table_transfer_by'), obj.table[0].transfer_by);
+                    }
+
+                    // Добавляем остальные строки
+                    for (let i = 1; i < obj.table.length; i++) {
+                        emp_table_add_row.click();
+
+                        let row = document.querySelectorAll('.emp_table_row')[i];
+
+                        // Выбираем сотрудника
+                        select_definer(row.querySelector('.emp_table_employee'), obj.table[i].employee);
+
+                        // Заполняем должности и отделы
+                        row.querySelector('.emp_table_prev_position').value = obj.table[i].prev_position;
+                        row.querySelector('.emp_table_new_position').value = obj.table[i].new_position;
+                        row.querySelector('.emp_table_prev_department').value = obj.table[i].prev_department;
+                        row.querySelector('.emp_table_new_department').value = obj.table[i].new_department;
+
+                        // Выбираем переводящего
+                        select_definer(row.querySelector('.emp_table_transfer_by'), obj.table[i].transfer_by);
+                    }
+                }
             }
         }
-        await selector_individuals();
-        await selector_organizations();
+
         frame_emp_update_show();
     }
 });
@@ -437,117 +521,70 @@ frame_emp_confirm_but.addEventListener('click', async function() {
         try {
             await collection_employment_contract_add();
         } catch (error) {
-            console.error("Error adding employment contract:", error);
-            alert("Произошла ошибка при добавлении трудового договора");
+            console.error("Error adding employee transfer order:", error);
+            alert("Произошла ошибка при добавлении приказа о перемещении");
         }
     }
     else {
         try {
+            // Получаем основные данные документа
             let emp_num_dover_current = num_emp_text.textContent;
-            let emp_num_dover = document.getElementById("emp_num_dover").value;
-            let emp_city = document.getElementById("emp_city").value;
-            let emp_date_day = document.getElementById("emp_date_day").value;
-            let emp_date_month = document.getElementById("emp_date_month").value;
-            let emp_date_year = document.getElementById("emp_date_year").value;
-            let emp_employer_name = document.getElementById("emp_employer_name").options[document.getElementById("emp_employer_name").selectedIndex].textContent;
-            let emp_employer_fio = document.getElementById("emp_employer_fio").options[document.getElementById("emp_employer_fio").selectedIndex].textContent;
-            let emp_employer_position = document.getElementById("emp_employer_position").value;
-            let emp_charter = document.getElementById("emp_charter").value;
-            let emp_employee_fio = document.getElementById("emp_employee_fio").options[document.getElementById("emp_employee_fio").selectedIndex].textContent;
-            let emp_employee_position = document.getElementById("emp_employee_position").value;
-            let emp_work_place = document.getElementById("emp_work_place").value;
-            let emp_work_address = document.getElementById("emp_work_address").value;
-            let emp_supervisor_fio = document.getElementById("emp_supervisor_fio").options[document.getElementById("emp_supervisor_fio").selectedIndex].textContent;
-            let emp_class = document.getElementById("emp_class").value;
-            let emp_start_day = document.getElementById("emp_start_day").value;
-            let emp_start_month = document.getElementById("emp_start_month").value;
-            let emp_start_year = document.getElementById("emp_start_year").value;
-            let emp_duration = document.getElementById("emp_duration").value;
-            let emp_salary = document.getElementById("emp_salary").value;
-            let emp_holiday_duration = document.getElementById("emp_holiday_duration").value;
-            let emp_day_start_time = document.getElementById("emp_day_start_time").value;
-            let emp_day_end_time = document.getElementById("emp_day_end_time").value;
-            let emp_day_rest_start_time = document.getElementById("emp_day_rest_start_time").value;
-            let emp_day_rest_end_time = document.getElementById("emp_day_rest_end_time").value;
-            let emp_company_address = document.getElementById("emp_company_address").value;
-            let emp_inn = document.getElementById("emp_inn").value;
-            let emp_kpp = document.getElementById("emp_kpp").value;
-            let emp_account = document.getElementById("emp_account").value;
-            let emp_bik = document.getElementById("emp_bik").value;
-            let emp_pass_seria = document.getElementById("emp_pass_seria").value;
-            let emp_pass_number = document.getElementById("emp_pass_number").value;
-            let emp_pass_issued = document.getElementById("emp_pass_issued").value;
-            let emp_pass_issue_for_day = document.getElementById("emp_pass_issue_for_day").value;
-            let emp_pass_issue_for_month = document.getElementById("emp_pass_issue_for_month").value;
-            let emp_pass_issue_for_year = document.getElementById("emp_pass_issue_for_year").value;
-            let emp_pass_kod = document.getElementById("emp_pass_kod").value;
-            let emp_pass_address = document.getElementById("emp_pass_address").value;
-            let emp_inspection_date_day = document.getElementById("emp_inspection_date_day").value;
-            let emp_inspection_date_month = document.getElementById("emp_inspection_date_month").value;
-            let emp_inspection_date_year = document.getElementById("emp_inspection_date_year").value;
-            let emp_receipt_date_day = document.getElementById("emp_receipt_date_day").value;
-            let emp_receipt_date_month = document.getElementById("emp_receipt_date_month").value;
-            let emp_receipt_date_year = document.getElementById("emp_receipt_date_year").value;
+            let emp_num_dover_new = document.getElementById("emp_num_dover").value;
+            let emp_date_day_new = document.getElementById("emp_date_day").value;
+            let emp_date_month_new = document.getElementById("emp_date_month").value;
+            let emp_date_year_new = document.getElementById("emp_date_year").value;
+            let emp_employer_fio_new = document.getElementById("emp_employer_fio").options[document.getElementById("emp_employer_fio").selectedIndex].textContent;
+            let emp_employer_cause_new = document.getElementById("emp_employer_cause").value;
+            let emp_employer_org_new = document.getElementById("emp_org").options[document.getElementById("emp_org").selectedIndex].textContent;
+
+            // Считывание данных из таблицы
+            let emp_employer_table_rows_new = [];
+
+            // Перебор каждой строки таблицы формы
+            for (let record of document.querySelectorAll('.emp_table_row')) {
+                let row = {};
+
+                // Получаем выбранного сотрудника
+                let employeeSelect = record.querySelector('.emp_table_employee');
+                row.employee = employeeSelect.options[employeeSelect.selectedIndex].textContent;
+
+                // Получаем предыдущую и новую должность
+                row.prev_position = record.querySelector('.emp_table_prev_position').value;
+                row.new_position = record.querySelector('.emp_table_new_position').value;
+
+                // Получаем предыдущий и новый отдел
+                row.prev_department = record.querySelector('.emp_table_prev_department').value;
+                row.new_department = record.querySelector('.emp_table_new_department').value;
+
+                // Получаем ФИО переводящего
+                let transferBySelect = record.querySelector('.emp_table_transfer_by');
+                row.transfer_by = transferBySelect.options[transferBySelect.selectedIndex].textContent;
+
+                emp_employer_table_rows_new.push(row);
+            }
 
             await eel.collection_employment_contract_update(
                 emp_num_dover_current,
-                emp_num_dover,
-                emp_city,
-                emp_date_day,
-                emp_date_month,
-                emp_date_year,
-                emp_employer_name,
-                emp_employer_fio,
-                emp_employer_position,
-                emp_charter,
-                emp_employee_fio,
-                emp_employee_position,
-                emp_work_place,
-                emp_work_address,
-                emp_supervisor_fio,
-                emp_class,
-                emp_start_day,
-                emp_start_month,
-                emp_start_year,
-                emp_duration,
-                emp_salary,
-                emp_holiday_duration,
-                emp_day_start_time,
-                emp_day_end_time,
-                emp_day_rest_start_time,
-                emp_day_rest_end_time,
-                emp_company_address,
-                emp_inn,
-                emp_kpp,
-                emp_account,
-                emp_bik,
-                emp_pass_seria,
-                emp_pass_number,
-                emp_pass_issued,
-                emp_pass_issue_for_day,
-                emp_pass_issue_for_month,
-                emp_pass_issue_for_year,
-                emp_pass_kod,
-                emp_pass_address,
-                emp_inspection_date_day,
-                emp_inspection_date_month,
-                emp_inspection_date_year,
-                emp_receipt_date_day,
-                emp_receipt_date_month,
-                emp_receipt_date_year
+                emp_num_dover_new,
+                emp_date_day_new,
+                emp_date_month_new,
+                emp_date_year_new,
+                emp_employer_fio_new,
+                emp_employer_cause_new,
+                emp_employer_table_rows_new,
+                emp_employer_org_new
             )();
 
-            num_emp_text.textContent = emp_num_dover;
-            emp_emp_text.textContent = emp_employer_name;
-            fio_emp_text.textContent = emp_employee_fio;
-            position_emp_text.textContent = emp_employee_position;
-            salary_emp_text.textContent = emp_salary;
+            // Обновляем отображение в таблице
+            num_emp_text.textContent = emp_num_dover_new;
+            date_emp_text.textContent = emp_date_day_new + "." + emp_date_month_new + "." + emp_date_year_new;
+            fio_emp_text.textContent = emp_employer_fio_new;
+            org_emp_text.textContent = emp_employer_org_new;
 
         } catch (error) {
-            console.error("Error updating employment contract:", error);
-            alert("Произошла ошибка при обновлении трудового договора");
+            console.error("Error updating employee transfer order:", error);
+            alert("Произошла ошибка при обновлении приказа о перемещении");
         }
-
     }
     // Hide the form after operation completes (whether successful or not)
     frame_employment_contact.style.display = "none";

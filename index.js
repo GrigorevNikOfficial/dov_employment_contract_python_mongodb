@@ -379,117 +379,54 @@ document.addEventListener('click', async function(event){
 
             // Показываем форму печати доверенности
             document.getElementById('frame_print').style.display = 'flex';
-
             window.print(); // Вызов формы печати
 
             // Скрываем формы после печати
             document.getElementById('frame_print').style.display = 'none';
         }
         else if (event.target.closest('.employment_contact')) {
-            console.log('Печать трудового договора');
+            console.log('Печать приказа о перемещении');
 
             let table_num_dover = event.target.closest('.table_row')
                 .querySelector('div:nth-child(2)').textContent;
 
             let obj_document = JSON.parse(JSON.stringify(await eel.collection_employment_contract_print(table_num_dover)()));
+            console.log('Данные документа:', obj_document);
 
-            // Заполняем форму печати трудового договора данными из объекта
-            // Номер договора
-            document.getElementById('title_num_input_emp').value = obj_document.num_dover;
-            // Город
-            document.getElementById('emp_city_input').value = obj_document.city;
+            // Заполняем форму печати приказа о перемещении данными из объекта
+            document.getElementById('print_emp_num_dover').value = obj_document.num_dover;
+            document.getElementById('print_emp_date_day').value = obj_document.date[0].day;
+            document.getElementById('print_emp_date_month').value = obj_document.date[0].month;
+            document.getElementById('print_emp_date_year').value = obj_document.date[0].year;
+            document.getElementById('print_emp_org').value = obj_document.employer_name;
+            document.getElementById('print_emp_employer_fio').value = obj_document.employer[0].fio;
+            document.getElementById('print_emp_employer_cause').value = obj_document.emp_employer_cause;
+            document.getElementById('print_emp_supervisor_name').value = obj_document.employer[0].fio;
 
-            // Дата договора
-            document.querySelector('.emp_date .day').value = obj_document.date[0].day;
-            document.querySelector('.emp_date .month').value = obj_document.date[0].month;
-            document.querySelector('.emp_date .year').value = obj_document.date[0].year;
+            // Очищаем таблицу
+            let print_emp_table_body = document.querySelector('#print_emp_table tbody');
+            print_emp_table_body.innerHTML = '';
 
-            // Работодатель
-            document.getElementById('emp_employer_name_input').value = obj_document.employer_name;
-            document.getElementById('emp_employer_position_input').value = obj_document.employer[0].position;
-            document.getElementById('emp_employer_fio_input').value = obj_document.employer[0].fio;
-            document.getElementById('emp_charter_input').value = obj_document.charter;
+            // Заполняем таблицу данными сотрудников
+            if (obj_document.table && obj_document.table.length > 0) {
+                obj_document.table.forEach((row, index) => {
+                    let tableRow = document.createElement('tr');
+                    tableRow.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${row.employee || ''}</td>
+                        <td>${row.prev_position || ''}</td>
+                        <td>${row.new_position || ''}</td>
+                        <td>${row.prev_department || ''}</td>
+                        <td>${row.new_department || ''}</td>
+                        <td>${row.transfer_by || ''}</td>
+                    `;
+                    print_emp_table_body.appendChild(tableRow);
+                });
+            }
 
-            // Работник
-            document.getElementById('emp_employee_fio_input').value = obj_document.employee[0].fio;
-            document.getElementById('emp_employee_pass_seria_input').value = obj_document.employee[0].pass_seria;
-            document.getElementById('emp_employee_pass_number_input').value = obj_document.employee[0].pass_number;
-
-            // Должность
-            document.getElementById('emp_position_input').value = obj_document.employee[0].position;
-
-            // Место работы
-            document.getElementById('emp_work_place_input').value = obj_document.work_place;
-            document.getElementById('emp_work_address_input').value = obj_document.work_address;
-
-            // Руководитель
-            document.getElementById('emp_supervisor_input').value = obj_document.supervisor_fio;
-
-            // Класс условий труда
-            document.getElementById('emp_class_input').value = obj_document.class;
-
-            // Дата начала работы
-            document.querySelector('.emp_start_date .day').value = obj_document.date_start[0].day;
-            document.querySelector('.emp_start_date .month').value = obj_document.date_start[0].month;
-            document.querySelector('.emp_start_date .year').value = obj_document.date_start[0].year;
-
-            // Испытательный срок
-            document.getElementById('emp_duration_input').value = obj_document.duration;
-
-            // Оклад
-            document.getElementById('emp_salary_input').value = obj_document.salary;
-
-            // Отпуск
-            document.getElementById('emp_holiday_duration_input').value = obj_document.holiday_duration;
-
-            // Рабочее время
-            document.getElementById('emp_day_start_time_input').value = obj_document.day_schedule[0].start_time;
-            document.getElementById('emp_day_end_time_input').value = obj_document.day_schedule[0].end_time;
-            document.getElementById('emp_day_rest_start_time_input').value = obj_document.day_schedule[0].rest_start_time;
-            document.getElementById('emp_day_rest_end_time_input').value = obj_document.day_schedule[0].rest_end_time;
-
-            // Реквизиты работодателя
-            document.getElementById('emp_employer_name_input2').value = obj_document.employer_name;
-            document.getElementById('emp_company_address_input').value = obj_document.company_address;
-            document.getElementById('emp_inn_input').value = obj_document.inn;
-            document.getElementById('emp_kpp_input').value = obj_document.kpp;
-            document.getElementById('emp_account_input').value = obj_document.account;
-            document.getElementById('emp_bik_input').value = obj_document.bik;
-
-            // Данные работника
-            document.getElementById('emp_employee_fio_input2').value = obj_document.employee[0].fio;
-            document.getElementById('emp_pass_seria_input').value = obj_document.employee[0].pass_seria;
-            document.getElementById('emp_pass_number_input').value = obj_document.employee[0].pass_number;
-            document.getElementById('emp_pass_issued_input').value = obj_document.employee[0].pass_issued;
-
-            // Дата выдачи паспорта
-            document.querySelector('.emp_pass_issue_date .day').value = obj_document.employee[0].pass_issue_for[0].day;
-            document.querySelector('.emp_pass_issue_date .month').value = obj_document.employee[0].pass_issue_for[0].month;
-            document.querySelector('.emp_pass_issue_date .year').value = obj_document.employee[0].pass_issue_for[0].year;
-
-            document.getElementById('emp_pass_kod_input').value = obj_document.employee[0].pass_kod;
-            document.getElementById('emp_pass_address_input').value = obj_document.employee[0].pass_address;
-
-            // Подписи
-            document.getElementById('emp_employer_fio_input2').value = obj_document.employer[0].fio;
-            document.getElementById('emp_employee_fio_input3').value = obj_document.employee[0].fio;
-
-            // Дата ознакомления
-            document.querySelector('.emp_inspection_date .day').value = obj_document.inspection_date[0].day;
-            document.querySelector('.emp_inspection_date .month').value = obj_document.inspection_date[0].month;
-            document.querySelector('.emp_inspection_date .year').value = obj_document.inspection_date[0].year;
-
-            document.getElementById('emp_employee_fio_input4').value = obj_document.employee[0].fio;
-
-            // Дата получения
-            document.querySelector('.emp_receipt_date .day').value = obj_document.receipt_date[0].day;
-            document.querySelector('.emp_receipt_date .month').value = obj_document.receipt_date[0].month;
-            document.querySelector('.emp_receipt_date .year').value = obj_document.receipt_date[0].year;
-
-            // Показываем форму печати трудового договора
+            // Показываем форму печати доверенности
             document.getElementById('frame_print_emp').style.display = 'flex';
-
-            window.print(); //Вызов формы печати
+            window.print(); // Вызов формы печати
 
             // Скрываем формы после печати
             document.getElementById('frame_print_emp').style.display = 'none';

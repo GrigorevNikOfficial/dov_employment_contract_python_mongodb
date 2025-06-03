@@ -17,7 +17,7 @@
     <div class="header_content">
         <div class="header_block">
             <div class="header_block-p1">CMS<span>Admin</span></div>
-            <div class="header_block-p2">Документы "Доверенность" и "Трудовой договор"</div>
+            <div class="header_block-p2">Документы "Доверенность" и "Приказ о перемещении"</div>
         </div>
         <div class="header_time">00:00:00</div>
     </div>
@@ -34,7 +34,7 @@
             <div class="main_menu-docs"><span>Документы</span></div>
             <div class="main_menu-docs_block" hidden>
                 <div class="main_menu-docs main_menu-documents"><span>Доверенности</span></div>
-                <div class="main_menu-docs main_menu-employment_contact"><span>Трудовые договора</span></div>
+                <div class="main_menu-docs main_menu-employment_contact"><span>Приказы о перемещении</span></div>
             </div>
             <div class="main_menu-guides"><span>Справочники</span></div>
             <div class="main_menu-guides_block" hidden>
@@ -68,17 +68,16 @@
         </div>
 
         <!--checked-->
-        <!----------------Меню: секция "Трудовые договоры"---------------->
+        <!----------------Меню: секция "Приказы о перемещении"---------------->
         <div class="section employment_contact">
-            <div class="section_caption">Трудовые договоры</div>
+            <div class="section_caption">Приказы о перемещении</div>
             <div class="section_table">
                 <div class="table_row th">
                     <div>№</div>
                     <div>Номер документа</div>
-                    <div>Наименование работодателя</div>
-                    <div>ФИО работника</div>
-                    <div>Должность работника</div>
-                    <div>Оклад</div>
+                    <div>Дата перевода</div>
+                    <div>ФИО ответственного</div>
+                    <div>Наименование организации</div>
                     <div>⚙</div>
                 </div>
             </div>
@@ -220,7 +219,7 @@
                 <span></span>
             </div>
         </div>
-        <!----------------Форма добавление/обновления в секцию "Трудовые договоры"---------------->
+        <!----------------Форма добавление/обновления в секцию "Приказы о перемещении"---------------->
         <div id="frame_employment_contact">
             <div class="frame_employment_contact_cont">
 
@@ -229,112 +228,60 @@
 
                 <div class="enter_data_field">
 
-                    <input id="emp_num_dover" type="text" placeholder="Номер договора">
-                    <input id="emp_city" type="text" placeholder="Город">
+                    <input id="emp_num_dover" type="text" placeholder="Номер приказа">
 
-                    <div>Дата договора:</div>
+                    <div>Дата приказа:</div>
                     <div class="emp_date">
                         <input id="emp_date_day" type="text" placeholder="День">
                         <input id="emp_date_month" type="text" placeholder="Месяц">
                         <input id="emp_date_year" type="text" placeholder="Год">
                     </div>
 
-                    <select id="emp_employer_name">
+                    <select id="emp_org">
                         <option value="">Выберите организацию:</option>
                     </select>
 
                     <div>
-                        <input id="emp_employer_position" type="text" placeholder="Должность">
                         <select id="emp_employer_fio">
-                            <option value="">Выберите представителя:</option>
+                            <option value="">Выберите ответственное лицо:</option>
                         </select>
                     </div>
 
-                    <input id="emp_charter" type="text" placeholder="Устав, доверенность">
+                    <input id="emp_employer_cause" type="text" placeholder="Причина перевода">
+
+                    <div style="color:rgb(0, 182, 189);margin-top:10px;">Табличные данные:</div>
+                    <table>
+                        <tr>
+                            <th>№</th>
+                            <th>ФИО сотрудника</th>
+                            <th>Прошлая должность</th>
+                            <th>Новая должность</th>
+                            <th>Прошлый отдел</th>
+                            <th>Новый отдел</th>
+                            <th>ФИО переводящего</th>
+                        </tr>
+                        <tr class="emp_table_row" id="emp_table_row_0">
+                            <td><input type="text" value="1"></td>
+                            <td>
+                                <select class="emp_table_employee">
+                                    <option value="">Выберите сотрудника:</option>
+                                </select>
+                            </td>
+                            <td><input type="text" class="emp_table_prev_position" readonly></td>
+                            <td><input type="text" class="emp_table_new_position"></td>
+                            <td><input type="text" class="emp_table_prev_department" readonly></td>
+                            <td><input type="text" class="emp_table_new_department"></td>
+                            <td>
+                                <select class="emp_table_transfer_by">
+                                    <option value="">Выберите переводящего:</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
 
                     <div>
-                        <input id="emp_employee_position" type="text" placeholder="Должность">
-                        <select id="emp_employee_fio">
-                            <option value="">Выберите работника:</option>
-                        </select>
-                    </div>
-
-                    <input id="emp_work_place" type="text" placeholder="Место работы">
-                    <input id="emp_work_address" type="text" placeholder="Адрес места работы">
-
-                    <select id="emp_supervisor_fio">
-                            <option value="">Выберите руководителя:</option>
-                    </select>
-
-                    <input id="emp_class" type="text" placeholder="Класс условий труда">
-
-                    <div>Дата начала работы:</div>
-                    <div class="emp_start">
-                        <input id="emp_start_day" type="text" placeholder="День">
-                        <input id="emp_start_month" type="text" placeholder="Месяц">
-                        <input id="emp_start_year" type="text" placeholder="Год">
-                    </div>
-
-                    <input id="emp_duration" type="text" placeholder="Продолжительность (месяцы)">
-                    <input id="emp_salary" type="text" placeholder="Заработная плата (руб)">
-                    <input id="emp_holiday_duration" type="text" placeholder="Длительность отпуска (дн)">
-
-                    <div>
-                        Часы начала работы
-                    </div>
-                    <div>
-                        <input id="emp_day_start_time" type="text" placeholder="Начало работы">
-                        <input id="emp_day_end_time" type="text" placeholder="Конец работы">
-                    </div>
-                    <div>
-                        Часы перерыва работы
-                    </div>
-                    <div>
-                        <input id="emp_day_rest_start_time" type="text" placeholder="Начало отдыха">
-                        <input id="emp_day_rest_end_time" type="text" placeholder="Конец отдыха">
-                    </div>
-                    <div>
-                        Данные работодателя
-                    </div>
-
-                    <input id="emp_company_address" type="text" placeholder="Адрес">
-                    <input id="emp_inn" type="text" placeholder="ИНН">
-                    <input id="emp_kpp" type="text" placeholder="КПП">
-                    <input id="emp_account" type="text" placeholder="Расчётный счёт">
-                    <input id="emp_bik" type="text" placeholder="БИК">
-                    <div>
-                        Данные работника
-                    </div>
-                    <div>
-                        <input id="emp_pass_seria" type="text" placeholder="Серия паспорта">
-                        <input id="emp_pass_number" type="text" placeholder="Номер паспорта">
-                    </div>
-                    <input id="emp_pass_issued" type="text" placeholder="Выдан">
-                    <div>
-                        Дата выдачи
-                    </div>
-                     <div class="emp_pass_issue_for">
-                        <input id="emp_pass_issue_for_day" type="text" placeholder="День">
-                        <input id="emp_pass_issue_for_month" type="text" placeholder="Месяц">
-                        <input id="emp_pass_issue_for_year" type="text" placeholder="Год">
-                    </div>
-
-                    <input id="emp_pass_kod" type="text" placeholder="Код подразделения">
-
-                    <input id="emp_pass_address" type="text" placeholder="Адрес регистрации">
-
-                    <div>
-                        Дата ознакомления
-                    </div>
-                    <div class="emp_inspection_date">
-                        <input id="emp_inspection_date_day" type="text" placeholder="День">
-                        <input id="emp_inspection_date_month" type="text" placeholder="Месяц">
-                        <input id="emp_inspection_date_year" type="text" placeholder="Год">
-                    </div>
-                    <div class="emp_receipt_date">
-                        <input id="emp_receipt_date_day" type="text" placeholder="День">
-                        <input id="emp_receipt_date_month" type="text" placeholder="Месяц">
-                        <input id="emp_receipt_date_year" type="text" placeholder="Год">
+                        <button id="emp_button_add">+</button>
+                        <button id="emp_button_delete">-</button>
                     </div>
                 </div>
                 <br>
@@ -362,6 +309,18 @@
                     <input id="frame_indiv_issued_for_month" type="text" placeholder="Месяц">
                     <input id="frame_indiv_issued_for_year" type="text" placeholder="Год">
                     <input id="frame_indiv_kod" type="text" placeholder="Код подразделения">
+                    <select id="frame_indiv_otdel">
+                        <option value="">Выберите отдел</option>
+                        <option value="Закупок">Закупок</option>
+                        <option value="Продаж">Продаж</option>
+                        <option value="Уборки">Уборки</option>
+                    </select>
+                    <select id="frame_indiv_dol">
+                        <option value="">Выберите должность</option>
+                        <option value="Менеджер по закупкам">Менеджер по закупкам</option>
+                        <option value="Менеджер по продажам">Менеджер по продажам</option>
+                        <option value="Менеджер по уборке">Менеджер по уборке</option>
+                    </select>
                 </div>
                 <div class="confirm_but">Добавление/Обновление</div>
             </div>
@@ -494,375 +453,58 @@
 
         </div>
 
-        <!----------------Форма печати трудового договора---------------->
+        <!----------------Форма печати приказа о перемещении---------------->
         <div id="frame_print_emp">
-            <div class="title_num">Трудовой договор № <input id="title_num_input_emp" type="text"></div>
-
-            <div class="emp_city_date">
-                <div class="emp_city">г. <input id="emp_city_input" type="text"></div>
-                <div class="emp_date">"<input class="day" type="text">" <input type="text" class="month"><input type="text" class="year"> г.</div>
-            </div>
-
-            <div class="emp_employer">
-                <input id="emp_employer_name_input" type="text">
-                <p>(наименование работодателя), именуем в дальнейшем</p>
-            </div>
-
-            <div class="emp_employer_details">
-                <p>"Работодатель", в лице</p>
-                <input id="emp_employer_position_input" type="text">
-                <p>,</p>
-                <input id="emp_employer_fio_input" type="text">
-            </div>
-
-            <div class="emp_charter">
-                <p>(должность, Ф.И.О. уполномоченного представителя), действующего на основании</p>
-                <input id="emp_charter_input" type="text">
-                <p>(Устава, доверенности), с одной стороны и</p>
-            </div>
-
-            <div class="emp_employee">
-                <input id="emp_employee_fio_input" type="text">
-                <p>,</p>
-                <input id="emp_employee_pass_seria_input" type="text">
-                <input id="emp_employee_pass_number_input" type="text">
-                <p>(Ф.И.О., паспортные</p>
-            </div>
-
-            <div class="emp_parties">
-                <p>данные), именуем в дальнейшем "Работник", с другой стороны, совместно именуемые</p>
-                <p>"Стороны", заключили настоящий Трудовой договор о нижеследующем:</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>1. Предмет Трудового договора</p>
-            </div>
-
-            <div class="emp_section_1_1">
-                <p>1.1. Работодатель обязуется предоставить Работнику работу согласно штатному расписанию в</p>
-                <p>должности</p>
-                <input id="emp_position_input" type="text">
-                <p>, обеспечить условия труда, предусмотренные трудовым</p>
-            </div>
-
-            <div class="emp_section_1_1_cont">
-                <p>законодательством РФ и иными нормативными правовыми актами, содержащими нормы</p>
-                <p>трудового права, соглашениями, локальными нормативными актами и настоящим Трудовым</p>
-                <p>договором, своевременно и в полном объеме выплачивать Работнику заработную плату, а</p>
-                <p>Работник обязуется лично выполнять трудовые функции, соблюдать Правила внутреннего</p>
-                <p>трудового распорядка, действующие у Работодателя.</p>
-            </div>
-
-            <div class="emp_section_1_2">
-                <p>1.2. Работа по настоящему Трудовому договору является для Работника основной работой.</p>
-            </div>
-
-            <div class="emp_section_1_3">
-                <p>1.3. Местом работы Работника является</p>
-                <input id="emp_work_place_input" type="text">
-                <p>Работодателя,</p>
-            </div>
-
-            <div class="emp_section_1_3_address">
-                <p>расположен по адресу:</p>
-                <input id="emp_work_address_input" type="text">
-                <p>.</p>
-            </div>
-
-            <div class="emp_section_1_4">
-                <p>1.4. Работник подчиняется непосредственно</p>
-                <input id="emp_supervisor_input" type="text">
-                <p>.</p>
-            </div>
-
-            <div class="emp_section_1_5">
-                <p>1.5. Работнику установлены следующие условия труда на рабочем месте:</p>
-                <p>-</p>
-                <input id="emp_class_input" type="text">
-                <p>(указать класс, подкласс условий труда).</p>
-            </div>
-
-            <div class="emp_section_1_6">
-                <p>1.6. Трудовые обязанности Работника не связаны с выполнением тяжелых работ,</p>
-                <p>работ в местностях с особыми климатическими условиями, работ с вредными, опасными и иными</p>
-                <p>иными особыми условиями труда.</p>
-            </div>
-
-            <div class="emp_section_1_7">
-                <p>1.7. Условия труда на рабочем месте соответствуют требованиям действующего</p>
-                <p>законодательства РФ в сфере охраны труда с учетом специфики трудовых функций Работника.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>2. Срок действия Трудового договора</p>
-            </div>
-
-            <div class="emp_section_2_1">
-                <p>2.1. Трудовой договор вступает в силу со дня его заключения Работником и Работодателем.</p>
-            </div>
-
-            <div class="emp_section_2_2">
-                <p>2.2. Дата начала работы:</p>
-                <div class="emp_start_date">"<input class="day" type="text">" <input type="text" class="month"><input type="text" class="year"> г.</div>
-            </div>
-
-            <div class="emp_section_2_3">
-                <p>2.3. Трудовой договор заключен на неопределенный срок.</p>
-            </div>
-
-            <div class="emp_section_2_4">
-                <p>2.4. В целях проверки соответствия квалификации Работника занимаемой должности, его</p>
-                <p>отношения к поручаемой работе Работнику устанавливается испытательный срок</p>
-                <p>продолжительностью</p>
-                <input id="emp_duration_input" type="text">
-                <p>месяцев с момента начала работы.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>3. Условия оплаты труда Работника</p>
-            </div>
-
-            <div class="emp_section_3_1">
-                <p>3.1. За выполнение трудовых обязанностей Работнику устанавливается должностной оклад в</p>
-                <p>размере</p>
-                <input id="emp_salary_input" type="text">
-                <p>рублей в месяц.</p>
-            </div>
-
-            <div class="emp_section_3_2">
-                <p>3.2. Работодателем устанавливаются стимулирующие и компенсационные выплаты (доплаты,</p>
-                <p>надбавки, премии и т.п.). Размеры и условия таких выплат определены в Положении о</p>
-                <p>премировании работников, с которым Работник ознакомлен при подписании настоящего</p>
-            </div>
-
-            <div class="emp_section_3_3">
-                <p>Трудового договора.</p>
-                <p>3.3. Заработная плата Работнику выплачивается путем перечисления на счет Работника в банке</p>
-                <p>каждые полмесяца в день, установленный Правилами внутреннего трудового распорядка.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>4. Режим рабочего времени и времени отдыха. Отпуск</p>
-            </div>
-
-            <div class="emp_section_4_1">
-                <p>4.1. Работнику устанавливается пятидневная рабочая неделя с двумя выходными днями.</p>
-            </div>
-
-            <div class="emp_section_4_2">
-                <p>4.2. Время начала работы:</p>
-                <input id="emp_day_start_time_input" type="text">
-                <p>. Время окончания работы:</p>
-                <input id="emp_day_end_time_input" type="text">
-                <p>.</p>
-            </div>
-
-            <div class="emp_section_4_3">
-                <p>4.3. В течение рабочего дня Работнику устанавливается перерыв для отдыха и питания с</p>
-                <input id="emp_day_rest_start_time_input" type="text">
-                <p>ч. до</p>
-                <input id="emp_day_rest_end_time_input" type="text">
-                <p>ч., который в рабочее время не включается.</p>
-            </div>
-
-            <div class="emp_section_4_4">
-                <p>4.4. Работнику предоставляется ежегодный оплачиваемый отпуск продолжительностью</p>
-                <input id="emp_holiday_duration_input" type="text">
-                <p>календарных дней.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>5. Права и обязанности Работника</p>
-            </div>
-
-            <div class="emp_section_5_1">
-                <p>5.1. Работник обязан:</p>
-                <p>5.1.1. Добросовестно исполнять свои трудовые обязанности, определяемые в Должностной</p>
-                <p>инструкции, являющейся Приложением к настоящему Договору.</p>
-                <p>5.1.2. Соблюдать Правила внутреннего трудового распорядка и иные локальные нормативные</p>
-                <p>акты Работодателя.</p>
-                <p>5.1.3. Соблюдать трудовую дисциплину, требования по охране труда и обеспечению</p>
-                <p>безопасности труда.</p>
-                <p>5.2. Работник имеет право:</p>
-                <p>5.2.1. На предоставление ему работы, обусловленной настоящим Трудовым договором.</p>
-                <p>5.2.2. Своевременную и полную выплату заработной платы в соответствии со своей</p>
-                <p>квалификацией, сложностью труда, количеством и качеством выполненной работы.</p>
-                <p>5.2.3. Обязательное социальное страхование в случаях, предусмотренных федеральными</p>
-                <p>законами.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>6. Права и обязанности Работодателя</p>
-            </div>
-
-            <div class="emp_section_6_1">
-                <p>6.1. Работодатель обязан:</p>
-                <p>6.1.1. Соблюдать трудовое законодательство и иные нормативные правовые акты, содержащие</p>
-                <p>нормы трудового права, локальные нормативные акты.</p>
-                <p>6.1.2. Предоставлять Работнику работу, обусловленную настоящим Трудовым договором.</p>
-                <p>6.1.3. Обеспечивать Работника оборудованием, инструментами, технической документацией и</p>
-                <p>иными средствами, необходимыми для исполнения им трудовых обязанностей.</p>
-                <p>6.1.5. Выплачивать своевременно и в полном размере причитающуюся Работнику заработную</p>
-                <p>плату, а также осуществлять иные выплаты в сроки, установленные в соответствии с Трудовым</p>
-                <p>кодексом РФ, Правилами внутреннего трудового распорядка.</p>
-                <p>6.1.6. Осуществлять обязательное социальное страхование Работника в порядке,</p>
-                <p>установленном федеральными законами.</p>
-                <p>6.1.7. Исполнять иные обязанности, предусмотренные трудовым законодательством.</p>
-                <p>6.2. Работодатель имеет право:</p>
-                <p>6.2.1. Поощрять Работника за добросовестный и эффективный труд.</p>
-                <p>6.2.2. Требовать от Работника исполнения трудовых обязанностей, определенных в настоящем</p>
-                <p>Договоре и Должностной инструкции, бережного отношения к имуществу Работодателя и</p>
-                <p>других работников, соблюдения Правил внутреннего трудового распорядка.</p>
-                <p>6.2.3. Привлекать Работника к дисциплинарной и материальной ответственности в порядке,</p>
-            </div>
-
-            <div class="emp_section_6_2">
-                <p>установленном действующим законодательством Российской Федерации.</p>
-                <p>6.2.4. Принимать локальные нормативные акты.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>7. Социальное страхование Работника</p>
-            </div>
-
-            <div class="emp_section_7_1">
-                <p>7.1. Работник подлежит обязательному социальному страхованию от несчастных случаев на</p>
-                <p>производстве и профессиональных заболеваний в порядке и на условиях, которые установлены</p>
-                <p>действующим законодательством Российской Федерации.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>8. Ответственность Сторон</p>
-            </div>
-
-            <div class="emp_section_8_1">
-                <p>8.1. Сторона Трудового договора, виновная в нарушении трудового законодательства и иных</p>
-                <p>нормативных правовых актов, содержащих нормы трудового права, несет ответственность в</p>
-                <p>случаях и порядке, которые установлены Трудовым кодексом Российской Федерации и иными</p>
-                <p>федеральными законами.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>9. Прекращение Трудового договора</p>
-            </div>
-
-            <div class="emp_section_9_1">
-                <p>9.1. Настоящий Трудовой договор может быть расторгнут по основаниям, предусмотренным</p>
-                <p>действующим законодательством Российской Федерации.</p>
-            </div>
-
-            <div class="emp_section_9_2">
-                <p>9.2. Днем прекращения Трудового договора во всех случаях является последний день работы</p>
-                <p>Работника, за исключением случаев, когда Работник фактически не работал, но за ним</p>
-                <p>сохранялось место работы (должность).</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>10. Заключительные положения</p>
-            </div>
-
-            <div class="emp_section_10_1">
-                <p>10.1. Условия настоящего Трудового договора имеют обязательную юридическую силу для</p>
-                <p>Сторон с момента его подписания. Все изменения и дополнения к настоящему Трудовому</p>
-                <p>договору оформляются двусторонним письменным соглашением.</p>
-                <p>10.2. Споры между Сторонами, возникающие при исполнении настоящего Трудового договора,</p>
-                <p>рассматриваются в порядке, установленном законодательством Российской Федерации.</p>
-                <p>10.3. Трудовой договор составлен в двух экземплярах, имеющих одинаковую юридическую</p>
-                <p>силу, один из которых хранится у Работодателя, а другой - у Работника.</p>
-            </div>
-
-            <div class="emp_section_title">
-                <p>11. Адреса, реквизиты и подписи Сторон</p>
-            </div>
-
-            <div class="emp_section_11_employer">
-                <p>Работодатель:</p>
-                <input id="emp_employer_name_input2" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_employer_address">
-                <p>Адрес:</p>
-                <input id="emp_company_address_input" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_employer_inn">
-                <p>ИНН:</p>
-                <input id="emp_inn_input" type="text">
-                <p>КПП:</p>
-                <input id="emp_kpp_input" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_employer_account">
-                <p>Р/с:</p>
-                <input id="emp_account_input" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_employer_bik">
-                <p>БИК:</p>
-                <input id="emp_bik_input" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_employee">
-                <p>Работник:</p>
-                <input id="emp_employee_fio_input2" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_employee_passport">
-                <p>Паспорт:</p>
-                <p>серия</p>
-                <input id="emp_pass_seria_input" type="text">
-                <p>№</p>
-                <input id="emp_pass_number_input" type="text">
-                <p>, выдан</p>
-                <input id="emp_pass_issued_input" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_employee_passport_date">
-                <div class="emp_pass_issue_date">"<input class="day" type="text">" <input type="text" class="month"><input type="text" class="year"> г.,</div>
-                <p>код подразделения:</p>
-                <input id="emp_pass_kod_input" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_employee_address">
-                <p>Зарегистрирован(а) по адресу:</p>
-                <input id="emp_pass_address_input" type="text">
-                <p>,</p>
-            </div>
-
-            <div class="emp_section_11_signatures">
-                <div class="emp_employer_signature">
-                    <p>Работодатель:</p>
-                    <p>/</p>
-                    <input id="emp_employer_fio_input2" type="text">
-                </div>
-
-                <div class="emp_employee_signature">
-                    <p>Работник:</p>
-                    <p>/</p>
-                    <input id="emp_employee_fio_input3" type="text">
+            <div class="print_emp_header">
+                <div class="print_emp_title">ПРИКАЗ О ПЕРЕВОДЕ СОТРУДНИКОВ</div>
+                <div class="print_emp_number">№ <input id="print_emp_num_dover" type="text" readonly></div>
+                <div class="print_emp_date">
+                    от "<input id="print_emp_date_day" type="text" readonly>" 
+                    <input id="print_emp_date_month" type="text" readonly> 
+                    <input id="print_emp_date_year" type="text" readonly> г.
                 </div>
             </div>
 
-            <div class="emp_section_11_inspection">
-                <p>С Должностной инструкцией, Правилами внутреннего трудового распорядка</p>
-                <p>Работник ознакомлен:</p>
-                <div class="emp_inspection_date">"<input class="day" type="text">" <input type="text" class="month"><input type="text" class="year"> г.</div>
-                <p>/</p>
-                <input id="emp_employee_fio_input4" type="text">
+            <div class="print_emp_organization">
+                <div class="print_emp_org_label">Организация:</div>
+                <input id="print_emp_org" type="text" readonly>
             </div>
 
-            <div class="emp_section_11_receipt">
-                <p>Экземпляр Трудового договора получил</p>
-                <div class="emp_receipt_date">"<input class="day" type="text">" <input type="text" class="month"><input type="text" class="year"> г.</div>
-                <p>Подпись Работника:</p>
+            <div class="print_emp_employer">
+                <div class="print_emp_employer_label">Ответственное лицо:</div>
+                <input id="print_emp_employer_fio" type="text" readonly>
+            </div>
+
+            <div class="print_emp_cause">
+                <div class="print_emp_cause_label">Причина перевода:</div>
+                <input id="print_emp_employer_cause" type="text" readonly>
+            </div>
+
+            <div class="print_emp_table_section">
+                <div class="print_emp_table_title">СПИСОК ПЕРЕВОДИМЫХ СОТРУДНИКОВ:</div>
+                <table id="print_emp_table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>ФИО сотрудника</th>
+                            <th>Прошлая должность</th>
+                            <th>Новая должность</th>
+                            <th>Прошлый отдел</th>
+                            <th>Новый отдел</th>
+                            <th>ФИО переводящего</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="print_emp_footer">
+                <div class="print_emp_signature_line">
+                    <div class="print_emp_signature_label">Подпись руководителя:</div>
+                    <div class="print_emp_signature_space">_________________________</div>
+                    <input id="print_emp_supervisor_name" type="text" readonly>
+                </div>
             </div>
         </div>
         <!------------------------------------------Конец раздела форм-------------------------------------------------->

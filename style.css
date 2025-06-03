@@ -698,7 +698,7 @@ main .main_content_block .table_row_print:active{
 #frame_doc .frame_doc_cont .confirm_but:active{
     background-color:rgb(0,8,8);
 }
-/*Форма добавления/обновления в секцию "Трудовые договоры"*/
+/*Форма добавления/обновления в секцию "Приказы о перемещении"*/
 /*checked*/
 #frame_employment_contact{
     display: none;
@@ -706,8 +706,8 @@ main .main_content_block .table_row_print:active{
     align-items: center;
     position: absolute;
     top: 50px;
-    left: calc(50% - 300px);
-    width: 600px;
+    left: calc(50% - 600px);
+    width: 1200px;
     height: auto;
     background-color: rgb(0,28,28);
     border-radius: 20px;
@@ -721,7 +721,7 @@ main .main_content_block .table_row_print:active{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 550px;
+    width: 1100px;
     height: 90%;
 }
 /*checked*/
@@ -765,18 +765,106 @@ main .main_content_block .table_row_print:active{
     background-color: white;
 }
 
+/* Стили для таблицы в форме приказов о перемещении */
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    color: rgb(240,240,240);
+    background-color: rgb(53, 53, 53);
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table th {
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgb(43, 43, 43);
+    border: 1px solid rgb(70, 70, 70);
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table td {
+    padding: 8px;
+    border: 1px solid rgb(70, 70, 70);
+}
+
+/* Column widths for the employment contract table */
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table th:nth-child(1),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table td:nth-child(1) {
+    width: 30px; /* Number column */
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table th:nth-child(2),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table td:nth-child(2) {
+    width: 25%; /* Employee name column */
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table th:nth-child(3),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table td:nth-child(3),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table th:nth-child(4),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table td:nth-child(4),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table th:nth-child(5),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table td:nth-child(5),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table th:nth-child(6),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table td:nth-child(6) {
+    width: 15%; /* Position and department columns */
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table th:nth-child(7),
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table td:nth-child(7) {
+    width: 25%; /* Transfer by column */
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table tr input {
+    width: 100%;
+    height: 35px;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: rgb(60, 60, 60);
+    color: rgb(240,240,240);
+    border: none;
+    padding: 0 5px;
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field table tr select {
+    width: 100%;
+    height: 35px;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: rgb(60, 60, 60);
+    color: rgb(240,240,240);
+    border: none;
+    padding: 0 5px;
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field div button {
+    width: 40px;
+    height: 30px;
+    background-color: rgb(53, 53, 53);
+    margin: 10px 5px;
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(240,240,240);
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+#frame_employment_contact .frame_employment_contact_cont .enter_data_field div button:active {
+    background-color: rgb(43, 43, 43);
+}
+
 #frame_employment_contact .frame_employment_contact_cont .enter_data_field{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 550px;
+    width: 1000px;
     height: auto;
     color: rgb(240,240,240);
 }
 #frame_employment_contact .frame_employment_contact_cont .enter_data_field input,
 #frame_employment_contact .frame_employment_contact_cont .enter_data_field select{
-    width: 450px;
+    width: 900px;
     height: 30px;
     margin: 5px 0;
     background-color: rgb(0,18,18);
@@ -793,13 +881,13 @@ main .main_content_block .table_row_print:active{
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 450px;
+    width: 900px;
 }
 #frame_employment_contact .frame_employment_contact_cont .enter_data_field div > input, select{
     width: 50%;
 }
 #frame_employment_contact .frame_employment_contact_cont .enter_data_field > select{
-    width: 450px;
+    width: 900px;
 }
 #frame_employment_contact .frame_employment_contact_cont .enter_data_field div button{
     width: 25%;
@@ -1151,7 +1239,7 @@ main .main_content_block .table_row_print:active{
 }
 
     /*--------------------------!!!Форма печати!!!--------------------------*/
-#frame_print, #frame_print_emp{
+#frame_print{
     display: none;
     justify-content: flex-start;
     align-items: center;
@@ -1163,7 +1251,7 @@ main .main_content_block .table_row_print:active{
     background-color:rgb(255,255,255);
 }
 
-#frame_print input, #frame_print_emp input{
+#frame_print input{
     text-align:center;
     font-size:12px;
 }
@@ -1617,19 +1705,17 @@ main .main_content_block .table_row_print:active{
 
 /*--------------------------!!!Настройки печати!!!--------------------------*/
 @media print {
-
     body * {
         visibility: hidden;
     }
-
-    #frame_print, #frame_print *, #frame_print_emp, #frame_print_emp * {
+    
+    #frame_print_emp, #frame_print_emp * {
         visibility: visible;
     }
 
-    main{
+    main {
         min-height: 0;
     }
-
 }
 
 @page{
@@ -1645,182 +1731,200 @@ input{
     border:0;
 }
 
-/*--------------------------!!!Стили для формы печати трудового договора!!!--------------------------*/
+/*--------------------------!!!Стили для формы печати приказа о перемещении!!!--------------------------*/
+
+/* Стили для формы печати приказа о перемещении */
 #frame_print_emp {
-    padding: 20px;
-    font-size: 12px;
-    line-height: 1.2;
-    overflow-y: auto;
+    display: none;
+    position: absolute;
     height: auto;
-    min-height: 800px;
-    width: 900px;
+    background-color: white;
+    color: black;
+    padding: 1cm;
+    box-sizing: border-box;
+    font-family: "Times New Roman", serif;
+    font-size: 14px;
+    line-height: 1.4;
+    font-family: "Times New Roman", serif;
+    font-size: 14px;
+    line-height: 1.4;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    font-weight: normal !important;
 }
 
-#frame_print_emp .title_num {
+/* Заголовок формы печати */
+.print_emp_header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 20px;
+}
+
+.print_emp_title {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.print_emp_number {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.print_emp_date {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Поля ввода в форме печати */
+#frame_print_emp input[type="text"] {
+    border: none !important;
+    border-bottom: 1px solid #000 !important;
+    background: transparent !important;
+    font-family: "Times New Roman", serif !important;
+    font-size: 14px !important;
+    padding: 2px 5px !important;
+    margin: 0 3px !important;
+    outline: none !important;
+    color: black !important;
+    text-align: left !important;
+}
+
+#frame_print_emp input[readonly] {
+    border-bottom: 1px solid #000 !important;
+    background: transparent !important;
+}
+
+/* Организация */
+.print_emp_organization {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.print_emp_org_label {
+    margin-right: 10px;
+    min-width: 120px;
+}
+
+#print_emp_org {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Ответственное лицо */
+.print_emp_employer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.print_emp_employer_label {
+    margin-right: 10px;
+    min-width: 140px;
+}
+
+#print_emp_employer_fio {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Причина перевода */
+.print_emp_cause {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.print_emp_cause_label {
+    margin-right: 10px;
+    min-width: 140px;
+}
+
+#print_emp_employer_cause {
+    flex: 1;
+    min-width: 400px;
+}
+
+/* Секция таблицы */
+.print_emp_table_section {
+    margin: 30px 0;
+}
+
+.print_emp_table_title {
     font-size: 16px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    text-decoration: underline;
 }
 
-#frame_print_emp .emp_city_date {
-    display: flex;
-    justify-content: space-between;
-    width: 95%;
-    margin-bottom: 15px;
+/* Таблица печати */
+#print_emp_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    font-size: 12px;
 }
 
-#frame_print_emp .emp_city input, 
-#frame_print_emp .emp_date input {
-    border-bottom: 1px solid black;
-}
-
-#frame_print_emp .emp_employer,
-#frame_print_emp .emp_employer_details,
-#frame_print_emp .emp_charter,
-#frame_print_emp .emp_employee,
-#frame_print_emp .emp_parties {
-    width: 95%;
-    margin-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-#frame_print_emp .emp_employer input,
-#frame_print_emp .emp_employer_details input,
-#frame_print_emp .emp_charter input,
-#frame_print_emp .emp_employee input {
-    border-bottom: 1px solid black;
-    margin: 0 5px;
-}
-
-#frame_print_emp .emp_section_title {
-    width: 95%;
+#print_emp_table th,
+#print_emp_table td {
+    border: 2px solid #000;
+    padding: 8px;
     text-align: center;
+    vertical-align: middle;
+}
+
+#print_emp_table th {
+    background-color: #f5f5f5;
     font-weight: bold;
-    margin: 15px 0;
+    font-size: 11px;
 }
 
-#frame_print_emp .emp_section_1_1,
-#frame_print_emp .emp_section_1_1_cont,
-#frame_print_emp .emp_section_1_2,
-#frame_print_emp .emp_section_1_3,
-#frame_print_emp .emp_section_1_3_address,
-#frame_print_emp .emp_section_1_4,
-#frame_print_emp .emp_section_1_5,
-#frame_print_emp .emp_section_1_6,
-#frame_print_emp .emp_section_1_7,
-#frame_print_emp .emp_section_2_1,
-#frame_print_emp .emp_section_2_2,
-#frame_print_emp .emp_section_2_3,
-#frame_print_emp .emp_section_2_4,
-#frame_print_emp .emp_section_3_1,
-#frame_print_emp .emp_section_3_2,
-#frame_print_emp .emp_section_3_3,
-#frame_print_emp .emp_section_4_1,
-#frame_print_emp .emp_section_4_2,
-#frame_print_emp .emp_section_4_3,
-#frame_print_emp .emp_section_4_4,
-#frame_print_emp .emp_section_5_1,
-#frame_print_emp .emp_section_6_1,
-#frame_print_emp .emp_section_6_2,
-#frame_print_emp .emp_section_7_1,
-#frame_print_emp .emp_section_8_1,
-#frame_print_emp .emp_section_9_1,
-#frame_print_emp .emp_section_9_2,
-#frame_print_emp .emp_section_10_1 {
-    width: 95%;
-    margin-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+/* Footer для формы печати трудового договора */
+.print_emp_footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
 }
 
-#frame_print_emp .emp_section_1_1 input,
-#frame_print_emp .emp_section_1_3 input,
-#frame_print_emp .emp_section_1_3_address input,
-#frame_print_emp .emp_section_1_4 input,
-#frame_print_emp .emp_section_1_5 input,
-#frame_print_emp .emp_section_2_4 input,
-#frame_print_emp .emp_section_3_1 input,
-#frame_print_emp .emp_section_4_2 input,
-#frame_print_emp .emp_section_4_3 input,
-#frame_print_emp .emp_section_4_4 input {
-    border-bottom: 1px solid black;
-    margin: 0 5px;
-}
-
-#frame_print_emp .emp_start_date,
-#frame_print_emp .emp_pass_issue_date,
-#frame_print_emp .emp_inspection_date,
-#frame_print_emp .emp_receipt_date {
+.print_emp_signature_line {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
 }
 
-#frame_print_emp .emp_start_date input,
-#frame_print_emp .emp_pass_issue_date input,
-#frame_print_emp .emp_inspection_date input,
-#frame_print_emp .emp_receipt_date input {
-    border-bottom: 1px solid black;
+.print_emp_signature_label {
+    margin-right: 10px;
+    font-weight: bold;
+    min-width: 150px;
 }
 
-#frame_print_emp .emp_section_11_employer,
-#frame_print_emp .emp_section_11_employer_address,
-#frame_print_emp .emp_section_11_employer_inn,
-#frame_print_emp .emp_section_11_employer_account,
-#frame_print_emp .emp_section_11_employer_bik,
-#frame_print_emp .emp_section_11_employee,
-#frame_print_emp .emp_section_11_employee_passport,
-#frame_print_emp .emp_section_11_employee_passport_date,
-#frame_print_emp .emp_section_11_employee_address {
-    width: 95%;
-    margin-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+.print_emp_signature_space {
+    margin-right: 10px;
+    font-size: 14px;
 }
 
-#frame_print_emp .emp_section_11_employer input,
-#frame_print_emp .emp_section_11_employer_address input,
-#frame_print_emp .emp_section_11_employer_inn input,
-#frame_print_emp .emp_section_11_employer_account input,
-#frame_print_emp .emp_section_11_employer_bik input,
-#frame_print_emp .emp_section_11_employee input,
-#frame_print_emp .emp_section_11_employee_passport input,
-#frame_print_emp .emp_section_11_employee_passport_date input,
-#frame_print_emp .emp_section_11_employee_address input {
-    border-bottom: 1px solid black;
-    margin: 0 5px;
+#print_emp_supervisor_name {
+    flex: 1;
+    min-width: 200px;
+    font-size: 14px !important;
 }
 
-#frame_print_emp .emp_section_11_signatures {
-    width: 95%;
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
-}
-
-#frame_print_emp .emp_employer_signature,
-#frame_print_emp .emp_employee_signature {
-    display: flex;
-    align-items: center;
-}
-
-#frame_print_emp .emp_employer_signature input,
-#frame_print_emp .emp_employee_signature input,
-#frame_print_emp .emp_section_11_inspection input {
-    border-bottom: 1px solid black;
-    margin: 0 5px;
-    width: 200px;
-}
-
-#frame_print_emp .emp_section_11_inspection,
-#frame_print_emp .emp_section_11_receipt {
-    width: 95%;
+.print_emp_date_signature {
     margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+}
+
+.print_emp_date_label {
+    font-size: 14px;
+    font-weight: bold;
 }
