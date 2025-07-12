@@ -1,10 +1,14 @@
 {
   "name": "dov_python_mongodb",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Автоматизированная система, включающая 'Доверенность' и 'Трудовой договор'",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run_db": "mongod --dbpath ~/mongo-data",
+    "run": "conda run -n vuz python backend.py"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
 }
